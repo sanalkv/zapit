@@ -31,6 +31,8 @@ dependencies:
   stacked: ^2.2.5
   stacked_services: ^0.8.13
   cached_network_image: ^3.1.0
+  retrofit: ^2.0.1
+  pretty_dio_logger: ^1.2.0-beta-1
   
 
 dev_dependencies:
@@ -38,6 +40,7 @@ dev_dependencies:
     sdk: flutter
   build_runner:
   stacked_generator:
+  retrofit_generator:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
