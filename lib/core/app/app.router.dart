@@ -38,10 +38,25 @@ class StackedRouter extends RouterBase {
       );
     },
     CoinDetailsView: (data) {
+      var args = data.getArgs<CoinDetailsViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const CoinDetailsView(),
+        builder: (context) => CoinDetailsView(
+          key: args.key,
+          coinSymbol: args.coinSymbol,
+        ),
         settings: data,
       );
     },
   };
+}
+
+/// ************************************************************************
+/// Arguments holder classes
+/// *************************************************************************
+
+/// CoinDetailsView arguments holder class
+class CoinDetailsViewArguments {
+  final Key? key;
+  final String coinSymbol;
+  CoinDetailsViewArguments({this.key, required this.coinSymbol});
 }

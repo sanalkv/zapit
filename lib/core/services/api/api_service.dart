@@ -3,6 +3,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:zapit/core/constants/constants.dart';
 import 'package:zapit/core/helpers/error_handler.dart';
+import 'package:zapit/core/model/coin_details_model.dart';
 import 'package:zapit/core/model/coins_list_model.dart';
 
 part 'api_service.g.dart';
@@ -20,6 +21,13 @@ abstract class ApiService {
 
   @GET('/data/top/totalvolfull')
   Future<CoinsListResponse> listCoins(@Query('tsym') String tsym);
+
+  @GET('/data/v2/histoday')
+  Future<CoinDetailsResponse> getCoinDetails(
+    @Query('tsym') String tsym,
+    @Query('fsym') String fsym,
+    @Query('limit') int limit,
+  );
 }
 
 InterceptorsWrapper _interceptorsWrapper() {
@@ -31,7 +39,7 @@ InterceptorsWrapper _interceptorsWrapper() {
     onError: (e, handler) {
       final String errorString = errorHandler(e);
       DioError error = DioError(requestOptions: e.requestOptions, response: e.response, type: e.type, error: errorString);
-       handler.next(error);
+      handler.next(error);
     },
   );
 }

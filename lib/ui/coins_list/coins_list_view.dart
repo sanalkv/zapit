@@ -33,6 +33,7 @@ class CoinsListView extends StatelessWidget {
               final imageUrl = model.coinsListResponse?.data?[index].coinInfo?.imageUrl;
               return CoinWidget(
                 imageUrl: imageUrl != null ? '$imageBaseUrl$imageUrl' : 'https://www.helptechco.com/files/1215BP6.png',
+              coinSymbol: model.coinsListResponse?.data?[index].coinInfo?.name ?? 'N/A',
               );
             },
             itemCount: model.coinsListResponse?.data?.length ?? 0,
