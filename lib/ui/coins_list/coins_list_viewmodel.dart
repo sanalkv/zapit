@@ -21,7 +21,7 @@ class CoinsListViewModel extends BaseViewModel {
     _coinsListResponse = await runBusyFuture<CoinsListResponse?>(_apiService.listCoins('USD'));
   }
 
-  void goToCoinDetailsView(String coinSymbol) {
-    _navigationService.navigateTo(Routes.coinDetailsView,arguments: CoinDetailsViewArguments(coinSymbol: coinSymbol));
+  void goToCoinDetailsView(CoinInfo coinInfo) {
+    _navigationService.navigateTo(Routes.coinDetailsView,arguments: CoinDetailsViewArguments(coinInfo: coinInfo));
   }
 }

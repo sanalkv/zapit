@@ -30,10 +30,9 @@ class CoinsListView extends StatelessWidget {
               childAspectRatio: 1.5,
             ),
             itemBuilder: (_, index) {
-              final imageUrl = model.coinsListResponse?.data?[index].coinInfo?.imageUrl;
+              final coinInfo = model.coinsListResponse?.data?[index].coinInfo;
               return CoinWidget(
-                imageUrl: imageUrl != null ? '$imageBaseUrl$imageUrl' : 'https://www.helptechco.com/files/1215BP6.png',
-              coinSymbol: model.coinsListResponse?.data?[index].coinInfo?.name ?? 'N/A',
+                coinInfo: coinInfo!,
               );
             },
             itemCount: model.coinsListResponse?.data?.length ?? 0,
