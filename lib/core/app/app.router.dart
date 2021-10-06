@@ -11,7 +11,7 @@ import 'package:stacked/stacked.dart';
 
 import '../../ui/coin_details/coin_details_view.dart';
 import '../../ui/coins_list/coins_list_view.dart';
-import '../model/coins_list_model.dart';
+import '../model/coin_model.dart';
 
 class Routes {
   static const String coinsListView = '/';
@@ -43,7 +43,7 @@ class StackedRouter extends RouterBase {
       return MaterialPageRoute<dynamic>(
         builder: (context) => CoinDetailsView(
           key: args.key,
-          coinInfo: args.coinInfo,
+          coin: args.coin,
         ),
         settings: data,
       );
@@ -58,6 +58,6 @@ class StackedRouter extends RouterBase {
 /// CoinDetailsView arguments holder class
 class CoinDetailsViewArguments {
   final Key? key;
-  final CoinInfo coinInfo;
-  CoinDetailsViewArguments({this.key, required this.coinInfo});
+  final Coin coin;
+  CoinDetailsViewArguments({this.key, required this.coin});
 }

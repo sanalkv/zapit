@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:zapit/core/constants/constants.dart';
 import 'package:zapit/ui/coins_list/widget/coin_widget.dart';
+import 'package:zapit/ui/widget/offline_widget.dart';
 import 'package:zapit/ui/widget/response_handler.dart';
 
 import 'coins_list_viewmodel.dart';
@@ -15,7 +16,7 @@ class CoinsListView extends StatelessWidget {
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: Text('Zapit'),
-          centerTitle: true,
+          actions: [if (!model.isOnline) OfflineWidget()],
         ),
         body: ResponseHandler(
           error: model.modelError,
@@ -30,12 +31,11 @@ class CoinsListView extends StatelessWidget {
               childAspectRatio: 1.5,
             ),
             itemBuilder: (_, index) {
-              final coinInfo = model.coinsListResponse?.data?[index].coinInfo;
               return CoinWidget(
-                coinInfo: coinInfo!,
+                coin: model.coinsList![index]!,
               );
             },
-            itemCount: model.coinsListResponse?.data?.length ?? 0,
+            itemCount: model.coinsList?.length ?? 0,
           ),
         ),
       ),

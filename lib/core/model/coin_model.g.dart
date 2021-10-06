@@ -20,22 +20,19 @@ class CoinAdapter extends TypeAdapter<Coin> {
       name: fields[0] as String?,
       fullName: fields[1] as String?,
       imagePath: fields[2] as String?,
-      coinHistory: fields[3] as CoinHistory?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Coin obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
       ..write(obj.fullName)
       ..writeByte(2)
-      ..write(obj.imagePath)
-      ..writeByte(3)
-      ..write(obj.coinHistory);
+      ..write(obj.imagePath);
   }
 
   @override
@@ -60,21 +57,24 @@ class CoinHistoryAdapter extends TypeAdapter<CoinHistory> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CoinHistory(
-      timeFrom: fields[0] as int?,
-      timeTo: fields[1] as int?,
-      priceData: (fields[2] as List?)?.cast<PriceData>(),
+      name: fields[0] as String?,
+      timeFrom: fields[1] as int?,
+      timeTo: fields[2] as int?,
+      priceData: (fields[3] as List?)?.cast<PriceData>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, CoinHistory obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.timeFrom)
+      ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.timeTo)
+      ..write(obj.timeFrom)
       ..writeByte(2)
+      ..write(obj.timeTo)
+      ..writeByte(3)
       ..write(obj.priceData);
   }
 

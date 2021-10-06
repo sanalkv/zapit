@@ -4,67 +4,74 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:zapit/core/constants/constants.dart';
+import 'package:zapit/core/model/coin_model.dart';
 import 'package:zapit/core/model/coins_list_model.dart';
+import 'package:zapit/ui/widget/offline_widget.dart';
 import 'package:zapit/ui/widget/response_handler.dart';
 
 import 'coin_details_viewmodel.dart';
 
 class CoinDetailsView extends StatelessWidget {
-  final CoinInfo coinInfo;
-  const CoinDetailsView({Key? key, required this.coinInfo}) : super(key: key);
+  final Coin coin;
+  const CoinDetailsView({Key? key, required this.coin}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<CoinDetailsViewModel>.reactive(
-      onModelReady: (viewModel) => viewModel.fetchCoinDetails(coinInfo.name ?? 'N/A'),
+      onModelReady: (viewModel) => viewModel.fetchCoinDetails(coin.name ?? 'N/A'),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
-          title: Text(coinInfo.fullName ?? 'N/A'),
+          title: Text(coin.fullName ?? 'N/A'),
+          actions: [if (!model.isOnline) OfflineWidget()],
         ),
-        body: ResponseHandler(
-          isBusy: model.isBusy,
-          error: model.modelError,
-          hasError: model.hasError,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        label('Name', coinInfo.name ?? 'N/A'),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        label('Full Name', coinInfo.fullName ?? 'N/A'),
-                      ],
-                    ),
-                    Spacer(),
-                    CachedNetworkImage(
-                      height: 50,
-                      width: 50,
-                      imageUrl: coinInfo.imageUrl != null ? '$imageBaseUrl${coinInfo.imageUrl}' : 'https://www.helptechco.com/files/1215BP6.png',
-                    ),
-                  ],
-                ),
-                Divider(),
-                Text(
-                  'Historical Price Data',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                  SizedBox(
-                          height: 16,
-                        ), 
-                Align(
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      label('Name', coin.name ?? 'N/A'),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      label('Full Name', coin.fullName ?? 'N/A'),
+                    ],
+                  ),
+                  Spacer(),
+                  CachedNetworkImage(
+                    height: 50,
+                    width: 50,
+                    errorWidget: (_, __, ___) => Text(coin.fullName ?? coin.name ?? 'Name not available'),
+                    imageUrl: coin.imagePath != null ? '$imageBaseUrl${coin.imagePath}' : 'https://www.helptechco.com/files/1215BP6.png',
+                  ),
+                ],
+              ),
+              Divider(),
+              Text(
+                'Historical Price Data',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Align(
                   alignment: Alignment.centerRight,
-                  child: Text('From ${model.timeFrom} to ${model.timeTo}',style: TextStyle(fontSize: 9),)),
-                  SizedBox(
-                          height: 8,
-                        ),
-                         Expanded(
+                  child: Text(
+                    'From ${model.timeFrom} to ${model.timeTo}',
+                    style: TextStyle(fontSize: 9),
+                  )),
+              SizedBox(
+                height: 8,
+              ),
+              Expanded(
+                child: ResponseHandler(
+                  isBusy: model.isBusy,
+                  error: model.modelError,
+                  hasError: model.hasError,
                   child: LineChart(
                     LineChartData(
                       gridData: FlGridData(drawHorizontalLine: false, drawVerticalLine: false),
@@ -88,9 +95,9 @@ class CoinDetailsView extends StatelessWidget {
                               Colors.blue.withOpacity(0.05),
                             ],
                           ),
-                          spots: model.coinDetailsResponse?.data?.data
+                          spots: model.coinHistory?.priceData
                               ?.map(
-                                (coinValue) => FlSpot(coinValue.time?.toDouble() ?? 0, coinValue.close ?? 0),
+                                (priceData) => FlSpot(priceData.time?.toDouble() ?? 0, priceData.price ?? 0),
                               )
                               .toList(),
                           dotData: FlDotData(show: false),
@@ -110,7 +117,7 @@ class CoinDetailsView extends StatelessWidget {
                           margin: 5,
                           interval: 5,
                           checkToShowTitle: (_, __, ____, _____, value) {
-                            return model.coinDetailsResponse?.data?.data?.any((element) => element.time == value) ?? false;
+                            return model.coinHistory?.priceData?.any((priceData) => priceData.time == value) ?? false;
                           },
                           getTextStyles: (_, __) => TextStyle(fontSize: 8),
                           getTitles: (value) {
@@ -142,8 +149,8 @@ class CoinDetailsView extends StatelessWidget {
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
