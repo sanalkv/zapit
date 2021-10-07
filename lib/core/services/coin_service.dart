@@ -9,7 +9,7 @@ class CoinService {
   final _apiService = locator<ApiService>();
   final _coinDBService = locator<CoinDBService>();
 
-  /// Returns coins
+  /// Returns coins list
   Future<List<Coin?>> fetchCoinsList() async {
     try {
       CoinsListResponse _coinsListResponse = await _apiService.listCoins('USD');
@@ -37,7 +37,7 @@ class CoinService {
     }
   }
 
-  /// Saves and returns the stored coins.
+  /// Saves and returns the stored coins list.
   Future<List<Coin>> _storeCoinsInDB(CoinsListResponse _coinsListResponse) async {
     List<Coin> coins = [];
     _coinsListResponse.data?.forEach((coinApiData) {
@@ -71,12 +71,12 @@ class CoinService {
     return coinHistory;
   }
 
-  /// Returns the saved coins
+  /// Returns the saved coins list
   Future<List<Coin?>?> _fetchCoinsFromDB() async {
     return await _coinDBService.loadCoins();
   }
 
-    /// Returns the saved coins
+    /// Returns the saved coin history
   Future<CoinHistory?> _fetchCoinHistoryFromDB(String coinSymbol) async {
     return await _coinDBService.loadCoinHistory(coinSymbol);
   }

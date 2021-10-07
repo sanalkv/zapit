@@ -1,11 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
-import 'package:zapit/core/constants/constants.dart';
 import 'package:zapit/core/model/coin_model.dart';
-import 'package:zapit/core/model/coins_list_model.dart';
+import 'package:zapit/ui/widget/image_widget.dart';
 import 'package:zapit/ui/widget/offline_widget.dart';
 import 'package:zapit/ui/widget/response_handler.dart';
 
@@ -42,11 +39,10 @@ class CoinDetailsView extends StatelessWidget {
                     ],
                   ),
                   Spacer(),
-                  CachedNetworkImage(
+                  ImageWidget(
                     height: 50,
                     width: 50,
-                    errorWidget: (_, __, ___) => Text(coin.fullName ?? coin.name ?? 'Name not available'),
-                    imageUrl: coin.imagePath != null ? '$imageBaseUrl${coin.imagePath}' : 'https://www.helptechco.com/files/1215BP6.png',
+                    coin: coin,
                   ),
                 ],
               ),

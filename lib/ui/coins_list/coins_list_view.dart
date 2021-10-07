@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:zapit/core/constants/constants.dart';
 import 'package:zapit/ui/coins_list/widget/coin_widget.dart';
 import 'package:zapit/ui/widget/offline_widget.dart';
 import 'package:zapit/ui/widget/response_handler.dart';

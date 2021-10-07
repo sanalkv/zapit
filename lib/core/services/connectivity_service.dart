@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/widgets.dart';
 import 'package:stacked/stacked.dart';
 
 class ConnectivityService with ReactiveServiceMixin {
@@ -18,6 +17,7 @@ class ConnectivityService with ReactiveServiceMixin {
     });
   }
 
+  /// Check if internet is available
   Future<bool> checkConnectivity() async {
     var connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult == ConnectivityResult.mobile && await _addressLookUp()) {
@@ -30,6 +30,7 @@ class ConnectivityService with ReactiveServiceMixin {
     return _isOnline.value;
   }
 
+  // loads a domain to confirm internet connectivity
   Future<bool> _addressLookUp() async {
     try {
       final result = await InternetAddress.lookup("www.google.com");
